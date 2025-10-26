@@ -12,13 +12,41 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
+    <style>
+      /* ====== STARFIELD (only visible in night-mode) ====== */
+      #star-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+
+      body.night-mode #star-canvas {
+        opacity: 1;
+      }
+
+      .main {
+        position: relative;
+        z-index: 1;
+      }
+
+      .mode-toggle,
+      .music-controls {
+        z-index: 2;
+      }
+    </style>
   </head>
 
   <body>
     <div class="main">
       <!-- Background Video -->
       <video autoplay loop muted playsinline class="bg__video">
-        <source src="assets/bg-video.mp4" type="video/mp4" />
+        <source src="assets/bg-video2.mp4" type="video/mp4" />
       </video>
 
       <!-- Background Music -->
@@ -41,7 +69,6 @@
 
       <nav>
         <div class="logo">S & A</div>
-     
       </nav>
 
       <div class="content">
@@ -58,150 +85,208 @@
     <section id="memories" class="memories-section">
       <h2>Memories with Silvi</h2>
       <div class="photo-grid">
-  <div class="photo">
-    <img src="assets/silvi1.jpg" alt="Silvi 1" />
-    <div class="overlay">1 Januari 💖</div>
-  </div>
+        <div class="photo">
+          <img src="assets/silvi1.jpg" alt="Silvi 1" />
+          <div class="overlay">1 Januari 💖</div>
+        </div>
 
-  <div class="photo">
-    <img src="assets/silvi1.jpg" alt="Silvi 2" />
-    <div class="overlay">1 Januari 💖</div>
-  </div>
+        <div class="photo">
+          <img src="assets/silvi1.jpg" alt="Silvi 2" />
+          <div class="overlay">1 Januari 💖</div>
+        </div>
 
-  <div class="photo">
-    <img src="assets/silvi1.jpg" alt="Silvi 3" />
-    <div class="overlay">1 Januari 💖</div>
-  </div>
+        <div class="photo">
+          <img src="assets/silvi1.jpg" alt="Silvi 3" />
+          <div class="overlay">1 Januari 💖</div>
+        </div>
+        
+        <div class="photo">
+          <img src="assets/silvi1.jpg" alt="Silvi 3" />
+          <div class="overlay">1 Januari 💖</div>
+        </div>
 
-  <div class="photo">
-    <img src="assets/silvi1.jpg" alt="Silvi 4" />
-    <div class="overlay">1 Januari 💖</div>
-  </div>
-</div>
+        <div class="photo">
+          <img src="assets/silvi1.jpg" alt="Silvi 3" />
+          <div class="overlay">1 Januari 💖</div>
+        </div>
 
-</section>
+        <div class="photo">
+          <img src="assets/silvi1.jpg" alt="Silvi 3" />
+          <div class="overlay">1 Januari 💖</div>
+        </div>
 
-<div id="lightbox" class="lightbox">
-  <span class="close">&times;</span>
-  <img class="lightbox-img" src="" alt="Popup Image" />
-  <p class="lightbox-caption"></p>
-</div>
+        <div class="photo">
+          <img src="assets/silvi1.jpg" alt="Silvi 3" />
+          <div class="overlay">1 Januari 💖</div>
+        </div>
+
+        <div class="photo">
+          <img src="assets/silvi1.jpg" alt="Silvi 4" />
+          <div class="overlay">1 Januari 💖</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+      <span class="close">&times;</span>
+      <img class="lightbox-img" src="" alt="Popup Image" />
+      <p class="lightbox-caption"></p>
+    </div>
+
+    <!-- Canvas Bintang -->
+    <canvas id="star-canvas" aria-hidden="true"></canvas>
 
     <script>
-  const music = document.getElementById("bg-music");
-  const musicBtn = document.getElementById("music-btn");
-  const musicSelect = document.getElementById("music-select");
-  const modeToggle = document.getElementById("mode-toggle");
+      const music = document.getElementById("bg-music");
+      const musicBtn = document.getElementById("music-btn");
+      const musicSelect = document.getElementById("music-select");
+      const modeToggle = document.getElementById("mode-toggle");
 
-  let isPlaying = false;
+      let isPlaying = false;
 
-  // 🌙 Mode malam otomatis berdasarkan waktu
-  const hour = new Date().getHours();
-  const savedMode = localStorage.getItem("theme");
+      // 🌙 Mode malam otomatis berdasarkan waktu
+      const hour = new Date().getHours();
+      const savedMode = localStorage.getItem("theme");
 
-  if (savedMode) {
-    document.body.classList.toggle("night-mode", savedMode === "night");
-    modeToggle.textContent = savedMode === "night" ? "🔆" : "🌙";
-  } else if (hour >= 18 || hour < 6) {
-    document.body.classList.add("night-mode");
-    modeToggle.textContent = "🔆";
-  }
+      if (savedMode) {
+        document.body.classList.toggle("night-mode", savedMode === "night");
+        modeToggle.textContent = savedMode === "night" ? "🔆" : "🌙";
+      } else if (hour >= 18 || hour < 6) {
+        document.body.classList.add("night-mode");
+        modeToggle.textContent = "🔆";
+      }
 
-  // 🔘 Tombol toggle mode malam / siang
-  modeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("night-mode");
-    const isNight = document.body.classList.contains("night-mode");
-    modeToggle.textContent = isNight ? "🔆" : "🌙";
-    localStorage.setItem("theme", isNight ? "night" : "day");
-  });
+      // 🔘 Tombol toggle mode malam / siang
+      modeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("night-mode");
+        const isNight = document.body.classList.contains("night-mode");
+        modeToggle.textContent = isNight ? "🔆" : "🌙";
+        localStorage.setItem("theme", isNight ? "night" : "day");
+      });
 
-  // 🎵 Tombol play/pause musik
-  musicBtn.addEventListener("click", () => {
-    if (!music.src) {
-      alert("Pilih lagu dulu ya 🎵");
-      return;
-    }
+      // 🎵 Tombol play/pause musik
+      musicBtn.addEventListener("click", () => {
+        if (!music.src) {
+          alert("Pilih lagu dulu ya 🎵");
+          return;
+        }
 
-    if (isPlaying) {
-      music.pause();
-      musicBtn.textContent = "🎵";
-    } else {
-      music.play();
-      musicBtn.textContent = "⏸️";
-    }
-    isPlaying = !isPlaying;
-  });
+        if (isPlaying) {
+          music.pause();
+          musicBtn.textContent = "🎵";
+        } else {
+          music.play();
+          musicBtn.textContent = "⏸️";
+        }
+        isPlaying = !isPlaying;
+      });
 
-  // 🎧 Saat pilih lagu
-  musicSelect.addEventListener("change", (e) => {
-    const selectedSong = e.target.value;
-    if (selectedSong) {
-      music.src = selectedSong;
-      music.play();
-      musicBtn.textContent = "⏸️";
-      isPlaying = true;
-    } else {
-      music.pause();
-      musicBtn.textContent = "🎵";
-      isPlaying = false;
-    }
-  });
+      // 🎧 Saat pilih lagu
+      musicSelect.addEventListener("change", (e) => {
+        const selectedSong = e.target.value;
+        if (selectedSong) {
+          music.src = selectedSong;
+          music.play();
+          musicBtn.textContent = "⏸️";
+          isPlaying = true;
+        } else {
+          music.pause();
+          musicBtn.textContent = "🎵";
+          isPlaying = false;
+        }
+      });
 
-  // ❤️ Efek hati berjatuhan
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "❤";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = Math.random() * 14 + 10 + "px";
-    heart.style.animationDuration = Math.random() * 4 + 4 + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 7000);
-  }, 1000);
+      // ❤️ Efek hati berjatuhan
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 14 + 10 + "px";
+        heart.style.animationDuration = Math.random() * 4 + 4 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+      }, 1000);
 
-  // === LIGHTBOX CINEMATIC ===
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.querySelector(".lightbox-img");
-  const lightboxCaption = document.querySelector(".lightbox-caption");
-  const closeBtn = document.querySelector(".lightbox .close");
+      // === LIGHTBOX CINEMATIC ===
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.querySelector(".lightbox-img");
+      const lightboxCaption = document.querySelector(".lightbox-caption");
+      const closeBtn = document.querySelector(".lightbox .close");
 
-  // Klik foto → buka popup
-  document.querySelectorAll(".photo").forEach((photo) => {
-    photo.addEventListener("click", () => {
-      const img = photo.querySelector("img");
-      const overlay = photo.querySelector(".overlay");
-      const caption = overlay ? overlay.textContent : img.alt;
+      document.querySelectorAll(".photo").forEach((photo) => {
+        photo.addEventListener("click", () => {
+          const img = photo.querySelector("img");
+          const overlay = photo.querySelector(".overlay");
+          const caption = overlay ? overlay.textContent : img.alt;
+          lightboxImg.src = img.src;
+          lightboxCaption.textContent = caption;
+          lightbox.classList.remove("closing");
+          lightbox.classList.add("active");
+          lightbox.style.display = "flex";
+        });
+      });
 
-      lightboxImg.src = img.src;
-      lightboxCaption.textContent = caption;
+      closeBtn.addEventListener("click", () => {
+        lightbox.classList.add("closing");
+        setTimeout(() => {
+          lightbox.classList.remove("active", "closing");
+          lightbox.style.display = "none";
+        }, 400);
+      });
 
-      // Aktifkan animasi
-      lightbox.classList.remove("closing");
-      lightbox.classList.add("active");
-      lightbox.style.display = "flex";
-    });
-  });
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) {
+          lightbox.classList.add("closing");
+          setTimeout(() => {
+            lightbox.classList.remove("active", "closing");
+            lightbox.style.display = "none";
+          }, 400);
+        }
+      });
 
-  // Klik tombol tutup
-  closeBtn.addEventListener("click", () => {
-    lightbox.classList.add("closing");
-    setTimeout(() => {
-      lightbox.classList.remove("active", "closing");
-      lightbox.style.display = "none";
-    }, 400);
-  });
+      // === 🌌 STARFIELD EFFECT ===
+      (function () {
+        const canvas = document.getElementById("star-canvas");
+        const ctx = canvas.getContext("2d");
 
-  // Klik di luar gambar → tutup
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) {
-      lightbox.classList.add("closing");
-      setTimeout(() => {
-        lightbox.classList.remove("active", "closing");
-        lightbox.style.display = "none";
-      }, 400);
-    }
-  });
-</script>
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resize);
+        resize();
+
+        const stars = Array.from({ length: 120 }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2,
+          a: Math.random(),
+          s: Math.random() * 0.02 + 0.005,
+        }));
+
+        function drawStars() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (let star of stars) {
+            star.a += star.s;
+            const brightness = 0.5 + 0.5 * Math.sin(star.a * Math.PI);
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.r, 0, 2 * Math.PI);
+            ctx.fillStyle = `rgba(255,255,255,${brightness})`;
+            ctx.fill();
+          }
+          requestAnimationFrame(drawStars);
+        }
+
+        drawStars();
+      })();
+    </script>
+
+    <footer class="site-footer">
+  <p> Made  by <strong>Arya Rachman Praditya</strong></p>
+</footer>
+
 
   </body>
 </html>
