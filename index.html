@@ -5,32 +5,145 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Web Design Mastery | Quick Travel</title>
+    <title>Love You</title>
+
+    <!-- Font elegan -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
+
   <body>
     <div class="main">
-      <!-- Video -->
-      <video autoplay loop muted plays-inline class="bg__video">
+      <!-- Background Video -->
+      <video autoplay loop muted playsinline class="bg__video">
         <source src="assets/bg-video.mp4" type="video/mp4" />
       </video>
 
+      <!-- Background Music -->
+      <audio id="bg-music" loop></audio>
+
+      <!-- Tombol mode malam -->
+      <button id="mode-toggle" class="mode-toggle" title="Ganti Mode">🌙</button>
+
+      <!-- Kontrol Musik -->
+      <div class="music-controls">
+        <button id="music-btn" class="music-btn" title="Play Music">🎵</button>
+
+        <select id="music-select" class="music-select">
+          <option value="">🎧 Pilih Lagu</option>
+          <option value="assets/song1.mp3">About You</option>
+          <option value="assets/song2.mp3">Evening Love</option>
+          <option value="assets/song3.mp3">Dreaming of You</option>
+        </select>
+      </div>
+
       <nav>
-        <div class="logo">QUICK TRAVEL</div>
+        <div class="logo">S & A</div>
         <ul>
-          <li><a href="#">HOME</a></li>
-          <li><a href="#">BEACHES</a></li>
-          <li><a href="#">TRIPS</a></li>
-          <li><a href="#">CONTACT</a></li>
+          <li><a href="#memories">MEMORIES</a></li>
+
         </ul>
       </nav>
+
       <div class="content">
-        <h1>F<span>IJI</span> I<span>SLAND</span></h1>
+        <h1>Love <span>You</span></h1>
         <p>
-          You'll always have fascinating places to be and friendly people to
-          see.
+          Being with you feels calm, simple, and endlessly beautiful.  
+          You are my favorite peace.
         </p>
-        <div class="promo">Starting from just <strong>$199</strong></div>
+        <div class="promo">Forever & Always</div>
       </div>
     </div>
+
+    <!-- Section Foto Silvi -->
+    <section id="memories" class="memories-section">
+      <h2>Memories with Silvi</h2>
+      <div class="photo-grid">
+        <div class="photo"><img src="assets/silvi1.jpg" alt="Silvi 1" /></div>
+        <div class="photo"><img src="assets/silvi1.jpg" alt="Silvi 2" /></div>
+        <div class="photo"><img src="assets/silvi1.jpg" alt="Silvi 3" /></div>
+        <div class="photo"><img src="assets/silvi1.jpg" alt="Silvi 4" /></div>
+        <!-- Tambahkan foto lainnya di sini -->
+      </div>
+    </section>
+
+    <script>
+      const music = document.getElementById("bg-music");
+      const musicBtn = document.getElementById("music-btn");
+      const musicSelect = document.getElementById("music-select");
+      const modeToggle = document.getElementById("mode-toggle");
+
+      let isPlaying = false;
+
+      // 🌙 Mode malam otomatis berdasarkan waktu
+      const hour = new Date().getHours();
+      const savedMode = localStorage.getItem("theme");
+
+      if (savedMode) {
+        document.body.classList.toggle("night-mode", savedMode === "night");
+        modeToggle.textContent = savedMode === "night" ? "🔆" : "🌙";
+      } else if (hour >= 18 || hour < 6) {
+        document.body.classList.add("night-mode");
+        modeToggle.textContent = "🔆";
+      }
+
+      // 🔘 Tombol toggle mode malam / siang
+      modeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("night-mode");
+        const isNight = document.body.classList.contains("night-mode");
+        modeToggle.textContent = isNight ? "🔆" : "🌙";
+        localStorage.setItem("theme", isNight ? "night" : "day");
+      });
+
+      // 🎵 Tombol play/pause
+      musicBtn.addEventListener("click", () => {
+        if (!music.src) {
+          alert("Pilih lagu dulu ya 🎵");
+          return;
+        }
+
+        if (isPlaying) {
+          music.pause();
+          musicBtn.classList.remove("playing");
+          musicBtn.textContent = "🎵";
+        } else {
+          music.play();
+          musicBtn.classList.add("playing");
+          musicBtn.textContent = "⏸️";
+        }
+        isPlaying = !isPlaying;
+      });
+
+      // 🎧 Saat pilih lagu
+      musicSelect.addEventListener("change", (e) => {
+        const selectedSong = e.target.value;
+        if (selectedSong) {
+          music.src = selectedSong;
+          music.play();
+          musicBtn.classList.add("playing");
+          musicBtn.textContent = "⏸️";
+          isPlaying = true;
+        } else {
+          music.pause();
+          musicBtn.classList.remove("playing");
+          musicBtn.textContent = "🎵";
+          isPlaying = false;
+        }
+      });
+
+      // ❤️ Efek hati berjatuhan
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 14 + 10 + "px";
+        heart.style.animationDuration = Math.random() * 4 + 4 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+      }, 1000);
+    </script>
   </body>
 </html>
