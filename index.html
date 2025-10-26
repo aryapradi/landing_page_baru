@@ -60,124 +60,148 @@
       <div class="photo-grid">
   <div class="photo">
     <img src="assets/silvi1.jpg" alt="Silvi 1" />
-    <div class="overlay">Silvi senyum waktu di taman 🌸</div>
+    <div class="overlay">1 Januari 💖</div>
   </div>
 
   <div class="photo">
     <img src="assets/silvi1.jpg" alt="Silvi 2" />
-    <div class="overlay">Momen favorit di sore hari 💕</div>
+    <div class="overlay">1 Januari 💖</div>
   </div>
 
   <div class="photo">
     <img src="assets/silvi1.jpg" alt="Silvi 3" />
-    <div class="overlay">Cahaya matahari dan senyummu ☀️</div>
+    <div class="overlay">1 Januari 💖</div>
   </div>
 
   <div class="photo">
     <img src="assets/silvi1.jpg" alt="Silvi 4" />
-    <div class="overlay">Waktu yang tak tergantikan 💖</div>
-  </div>
-</div>
-
-<div class="photo-grid">
-  <div class="photo">
-    <img src="assets/silvi1.jpg" alt="Silvi 1" />
-    <div class="overlay">Silvi senyum waktu di taman 🌸</div>
-  </div>
-
-  <div class="photo">
-    <img src="assets/silvi1.jpg" alt="Silvi 2" />
-    <div class="overlay">Momen favorit di sore hari 💕</div>
-  </div>
-
-  <div class="photo">
-    <img src="assets/silvi1.jpg" alt="Silvi 3" />
-    <div class="overlay">Cahaya matahari dan senyummu ☀️</div>
-  </div>
-
-  <div class="photo">
-    <img src="assets/silvi1.jpg" alt="Silvi 4" />
-    <div class="overlay">Waktu yang tak tergantikan 💖</div>
+    <div class="overlay">1 Januari 💖</div>
   </div>
 </div>
 
 </section>
 
+<div id="lightbox" class="lightbox">
+  <span class="close">&times;</span>
+  <img class="lightbox-img" src="" alt="Popup Image" />
+  <p class="lightbox-caption"></p>
+</div>
+
     <script>
-      const music = document.getElementById("bg-music");
-      const musicBtn = document.getElementById("music-btn");
-      const musicSelect = document.getElementById("music-select");
-      const modeToggle = document.getElementById("mode-toggle");
+  const music = document.getElementById("bg-music");
+  const musicBtn = document.getElementById("music-btn");
+  const musicSelect = document.getElementById("music-select");
+  const modeToggle = document.getElementById("mode-toggle");
 
-      let isPlaying = false;
+  let isPlaying = false;
 
-      // 🌙 Mode malam otomatis berdasarkan waktu
-      const hour = new Date().getHours();
-      const savedMode = localStorage.getItem("theme");
+  // 🌙 Mode malam otomatis berdasarkan waktu
+  const hour = new Date().getHours();
+  const savedMode = localStorage.getItem("theme");
 
-      if (savedMode) {
-        document.body.classList.toggle("night-mode", savedMode === "night");
-        modeToggle.textContent = savedMode === "night" ? "🔆" : "🌙";
-      } else if (hour >= 18 || hour < 6) {
-        document.body.classList.add("night-mode");
-        modeToggle.textContent = "🔆";
-      }
+  if (savedMode) {
+    document.body.classList.toggle("night-mode", savedMode === "night");
+    modeToggle.textContent = savedMode === "night" ? "🔆" : "🌙";
+  } else if (hour >= 18 || hour < 6) {
+    document.body.classList.add("night-mode");
+    modeToggle.textContent = "🔆";
+  }
 
-      // 🔘 Tombol toggle mode malam / siang
-      modeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("night-mode");
-        const isNight = document.body.classList.contains("night-mode");
-        modeToggle.textContent = isNight ? "🔆" : "🌙";
-        localStorage.setItem("theme", isNight ? "night" : "day");
-      });
+  // 🔘 Tombol toggle mode malam / siang
+  modeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("night-mode");
+    const isNight = document.body.classList.contains("night-mode");
+    modeToggle.textContent = isNight ? "🔆" : "🌙";
+    localStorage.setItem("theme", isNight ? "night" : "day");
+  });
 
-      // 🎵 Tombol play/pause
-      musicBtn.addEventListener("click", () => {
-        if (!music.src) {
-          alert("Pilih lagu dulu ya 🎵");
-          return;
-        }
+  // 🎵 Tombol play/pause musik
+  musicBtn.addEventListener("click", () => {
+    if (!music.src) {
+      alert("Pilih lagu dulu ya 🎵");
+      return;
+    }
 
-        if (isPlaying) {
-          music.pause();
-          musicBtn.classList.remove("playing");
-          musicBtn.textContent = "🎵";
-        } else {
-          music.play();
-          musicBtn.classList.add("playing");
-          musicBtn.textContent = "⏸️";
-        }
-        isPlaying = !isPlaying;
-      });
+    if (isPlaying) {
+      music.pause();
+      musicBtn.textContent = "🎵";
+    } else {
+      music.play();
+      musicBtn.textContent = "⏸️";
+    }
+    isPlaying = !isPlaying;
+  });
 
-      // 🎧 Saat pilih lagu
-      musicSelect.addEventListener("change", (e) => {
-        const selectedSong = e.target.value;
-        if (selectedSong) {
-          music.src = selectedSong;
-          music.play();
-          musicBtn.classList.add("playing");
-          musicBtn.textContent = "⏸️";
-          isPlaying = true;
-        } else {
-          music.pause();
-          musicBtn.classList.remove("playing");
-          musicBtn.textContent = "🎵";
-          isPlaying = false;
-        }
-      });
+  // 🎧 Saat pilih lagu
+  musicSelect.addEventListener("change", (e) => {
+    const selectedSong = e.target.value;
+    if (selectedSong) {
+      music.src = selectedSong;
+      music.play();
+      musicBtn.textContent = "⏸️";
+      isPlaying = true;
+    } else {
+      music.pause();
+      musicBtn.textContent = "🎵";
+      isPlaying = false;
+    }
+  });
 
-      // ❤️ Efek hati berjatuhan
-      setInterval(() => {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML = "❤";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = Math.random() * 14 + 10 + "px";
-        heart.style.animationDuration = Math.random() * 4 + 4 + "s";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 7000);
-      }, 1000);
-    </script>
+  // ❤️ Efek hati berjatuhan
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 14 + 10 + "px";
+    heart.style.animationDuration = Math.random() * 4 + 4 + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 7000);
+  }, 1000);
+
+  // === LIGHTBOX CINEMATIC ===
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.querySelector(".lightbox-img");
+  const lightboxCaption = document.querySelector(".lightbox-caption");
+  const closeBtn = document.querySelector(".lightbox .close");
+
+  // Klik foto → buka popup
+  document.querySelectorAll(".photo").forEach((photo) => {
+    photo.addEventListener("click", () => {
+      const img = photo.querySelector("img");
+      const overlay = photo.querySelector(".overlay");
+      const caption = overlay ? overlay.textContent : img.alt;
+
+      lightboxImg.src = img.src;
+      lightboxCaption.textContent = caption;
+
+      // Aktifkan animasi
+      lightbox.classList.remove("closing");
+      lightbox.classList.add("active");
+      lightbox.style.display = "flex";
+    });
+  });
+
+  // Klik tombol tutup
+  closeBtn.addEventListener("click", () => {
+    lightbox.classList.add("closing");
+    setTimeout(() => {
+      lightbox.classList.remove("active", "closing");
+      lightbox.style.display = "none";
+    }, 400);
+  });
+
+  // Klik di luar gambar → tutup
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.add("closing");
+      setTimeout(() => {
+        lightbox.classList.remove("active", "closing");
+        lightbox.style.display = "none";
+      }, 400);
+    }
+  });
+</script>
+
   </body>
 </html>
